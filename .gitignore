@@ -1,0 +1,11 @@
+.external/
+artifacts/
+.env
+.env.override
+configs/*.local.json
+__pycache__/
+*.py[cod]
+.venv/
+*.pdf
+*.tmp
+.DS_Store

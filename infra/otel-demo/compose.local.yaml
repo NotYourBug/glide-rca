@@ -1,0 +1,79 @@
+# Local inspection only; keep upstream inter-container ports unchanged.
+services:
+  frontend-proxy:
+    ports: !override
+      - "127.0.0.1:8080:8080"
+  prometheus:
+    ports: !override
+      - "127.0.0.1:9090:9090"
+  opensearch:
+    ports: !override
+      - "127.0.0.1:9200:9200"
+  ad:
+    ports: !reset []
+  cart:
+    ports: !reset []
+  checkout:
+    ports: !reset []
+    environment:
+      GOMEMLIMIT: 96MiB
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+  currency:
+    ports: !reset []
+  email:
+    ports: !reset []
+  frontend:
+    ports: !reset []
+  image-provider:
+    ports: !reset []
+  load-generator:
+    ports: !reset []
+  payment:
+    ports: !reset []
+  product-catalog:
+    ports: !reset []
+    environment:
+      GOMEMLIMIT: 96MiB
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+  quote:
+    ports: !reset []
+  recommendation:
+    ports: !reset []
+  shipping:
+    ports: !reset []
+  flagd:
+    ports: !reset []
+  flagd-ui:
+    ports: !reset []
+  telemetry-docs:
+    ports: !reset []
+  astronomy-db:
+    ports: !reset []
+  valkey-cart:
+    ports: !reset []
+  otel-collector:
+    ports: !reset []
+  jaeger:
+    ports: !reset []
+  grafana:
+    ports: !reset []
+    environment:
+      GF_INSTALL_PLUGINS: ""
+      GF_PLUGINS_PREINSTALL: ""
+      GF_PLUGINS_PREINSTALL_SYNC: ""
+      GF_PLUGINS_PREINSTALL_DISABLED: "true"
+      GF_PLUGINS_PREINSTALL_AUTO_UPDATE: "false"
+    volumes:
+      - ../grafana-plugins:/var/lib/grafana/plugins:ro
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+  opamp-server:
+    ports: !reset []
