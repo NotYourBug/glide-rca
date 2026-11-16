@@ -8,6 +8,7 @@
 - [已确认的 M0 设计](docs/design/stages/m0-design.md)
 - [M0 操作说明](docs/runbooks/m0-local-lab.md)
 - [M0 实测与交付状态](docs/delivery/m0-validation.md)
+- [M0 日志映射缺陷修复](docs/delivery/m0-log-ingestion-fix.md)
 - [固定协作规则与 Ponytail 约束](AGENTS.md)
 
 探针仅使用 Python 3.11+ 标准库，测试不依赖 Docker 或外网：

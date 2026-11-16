@@ -6,6 +6,8 @@
 
 当前阶段：**M0 实验环境与接口验证**。状态：**实现和限定验证完成，已提交用户审查；尚未获审查通过**。结果与已知限制见 [M0 交付记录](../delivery/m0-validation.md)。
 
+当前工作：[日志映射缺陷迭代](stages/m0-log-ingestion-fix.md)已完成修复及限定验收，等待用户审查，结果见[日志修复报告](../delivery/m0-log-ingestion-fix.md)。不进入M1。
+
 本阶段确认入口：[《M0 本阶段设计方案文档》](stages/m0-design.md)。固定协作流程见 [AGENTS.md](../../AGENTS.md)。
 
 | 批次 | 主题 | 状态 |

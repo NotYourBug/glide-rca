@@ -62,6 +62,9 @@ def validate_config(config: dict) -> dict:
         r"[\w.]{1,128}", config["log_service_field"], re.ASCII
     ):
         raise ValueError("Invalid log_service_field")
+    pattern = config.get("log_index_pattern", "otel-logs-*")
+    if not isinstance(pattern, str) or not re.fullmatch(r"otel-logs-[a-z0-9.*_-]{1,100}", pattern):
+        raise ValueError("Invalid log_index_pattern")
     return config
 
 
@@ -146,6 +149,7 @@ def run_probe(config: dict, start: str, end: str, output: Path) -> dict:
     samples.mkdir()
     report = {
         "schema_version": "m0-probe.v1", "environment_id": config["environment_id"],
+        "log_index_pattern": config.get("log_index_pattern", "otel-logs-*"),
         "window": {"start": start, "end": end},
         "captured_at": datetime.now(timezone.utc).isoformat(), "checks": [],
         "limits": {"response_bytes": MAX_BYTES, "logs": 200, "trace_search_depth": 100,
@@ -208,7 +212,7 @@ def run_probe(config: dict, start: str, end: str, output: Path) -> dict:
             raise ValueError("No log index mappings")
         return {"indices": sorted(payload)}
 
-    logs_url = config["opensearch_url"].rstrip("/") + "/otel-logs-*"
+    logs_url = config["opensearch_url"].rstrip("/") + "/" + report["log_index_pattern"]
     check("log_mapping", logs_url + "/_mapping", inspect_mapping)
 
     def inspect_logs(payload):

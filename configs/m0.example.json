@@ -7,6 +7,7 @@
   "resource_label": "container_name",
   "resource_value": "ad",
   "log_service_field": "resource.service.name.keyword",
+  "log_index_pattern": "otel-logs-v2-*",
   "metric_queries": {
     "request_rate": "sum(rate(traces_span_metrics_calls_total{service_name=\"payment\",span_kind=\"SPAN_KIND_SERVER\"}[5m]))",
     "error_rate": "sum(rate(traces_span_metrics_calls_total{service_name=\"payment\",span_kind=\"SPAN_KIND_SERVER\",status_code=\"STATUS_CODE_ERROR\"}[5m])) / sum(rate(traces_span_metrics_calls_total{service_name=\"payment\",span_kind=\"SPAN_KIND_SERVER\"}[5m]))",

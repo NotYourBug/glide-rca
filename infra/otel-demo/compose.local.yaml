@@ -59,6 +59,15 @@ services:
     ports: !reset []
   otel-collector:
     ports: !reset []
+    volumes:
+      - ../../infra/otel-demo/otelcol.logs.yaml:/etc/otelcol-glide-logs.yml:ro
+    command:
+      - --config=/etc/otelcol-config.yml
+      - --config=/etc/otelcol-config-full.yml
+      - --config=/etc/otelcol-config-observability.yml
+      - --config=/etc/otelcol-config-extras.yml
+      - --config=/etc/otelcol-glide-logs.yml
+      - --feature-gates=service.profilesSupport
   jaeger:
     ports: !reset []
   grafana:
@@ -71,6 +80,7 @@ services:
       GF_PLUGINS_PREINSTALL_AUTO_UPDATE: "false"
     volumes:
       - ../grafana-plugins:/var/lib/grafana/plugins:ro
+      - ../../infra/otel-demo/grafana-opensearch.yaml:/etc/grafana/provisioning/datasources/opensearch.yaml:ro
     deploy:
       resources:
         limits:

@@ -56,6 +56,13 @@ class ValidationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             probe.validate_config(bad)
 
+    def test_reject_unsafe_log_index_pattern(self):
+        for pattern in ["*", "../other", "otel-logs-x,_all", "otel-logs-v2-*/_delete",
+                        "otel-logs-x?", "otel-logs-foo bar", None]:
+            bad = {**config(), "log_index_pattern": pattern}
+            with self.subTest(pattern=pattern), self.assertRaises(ValueError):
+                probe.validate_config(bad)
+
 
 class TransportTests(unittest.TestCase):
     def test_redirect_is_refused(self):
@@ -114,6 +121,16 @@ class ProbeTests(unittest.TestCase):
             self.assertEqual(saved["schema_version"], "m0-probe.v1")
             sample = (output / "samples/trace-1.json").read_text()
             self.assertIn("1794787200123456789", sample)
+
+    def test_configured_log_index_is_used(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(probe, "request_json", side_effect=self.response) as request:
+                report = probe.run_probe({**config(), "log_index_pattern": "otel-logs-v2-*"},
+                                         START, END, Path(directory) / "new")
+            urls = [call.args[0] for call in request.call_args_list]
+            self.assertIn("http://127.0.0.1:9200/otel-logs-v2-*/_mapping", urls)
+            self.assertIn("http://127.0.0.1:9200/otel-logs-v2-*/_search", urls)
+            self.assertEqual(report["log_index_pattern"], "otel-logs-v2-*")
 
     def test_existing_output_is_never_overwritten(self):
         with tempfile.TemporaryDirectory() as directory:

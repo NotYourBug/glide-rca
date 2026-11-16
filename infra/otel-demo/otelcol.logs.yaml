@@ -1,0 +1,9 @@
+exporters:
+  opensearch:
+    logs_index: otel-logs-v2
+
+service:
+  telemetry:
+    logs:
+      # Keep stderr; never send export failures back through their own exporter.
+      processors: []

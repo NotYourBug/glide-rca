@@ -76,7 +76,7 @@ Docker stats 也观察到故障时约393%、关闭后约0.22%的 Ad CPU；两者
 3. Grafana 首次因插件下载域名解析失败循环启动；改用官方固定归档、核验 SHA-256、只读挂载并关闭自动更新，内存上限384M。
 4. checkout 初始20M上限下曾到99.41%，随后出现一次重启。Docker 后续状态未保留确切退出原因，不能据此断言 OOM。product-catalog 随后到20M上限，09:57:49 UTC 的 Docker 事件明确记录 oom 和退出137。两个 Go 组件均覆盖为128M、`GOMEMLIMIT=96MiB`；之前的观察窗作失败记录保留，最终窗口从10:00:40 UTC重新计时。
 5. 上游 minimal 组合的 Collector 命令仍加载 full 配置，因此对未部署 Kafka 产生采集告警；PostgreSQL 健康检查也产生角色相关日志噪声。本阶段未改造上游遥测管线。
-6. Collector 实际报告 OpenSearch `mapper_parsing_exception`：`attributes.http` 已映射为 text，又收到 `http.request.method` 对象路径，部分日志被永久丢弃。本次 Payment 查询和故障日志可用，**全服务日志完整性未通过验证**；不能用已存数量推算全部请求/错误数量。错误摘要留在 `final-observation/collector-export-errors.log`。字段标准化和采集覆盖是后续正式数据接入设计必须解决的已知约束。
+6. 原验证曾报告 OpenSearch `mapper_parsing_exception`：`attributes.http` 已映射为 text，又收到 `http.request.method` 对象路径，部分日志被永久丢弃，旧窗口不能用于完整日志数量推算。**后续M0缺陷迭代已修复这一映射拒收**：新索引实收/发送/落库70278条一致，13个真实服务和异构回归通过，详见[修复交付报告](m0-log-ingestion-fix.md)。原错误摘要仍留在 `final-observation/collector-export-errors.log`，历史缺失没有补造；这也不表示所有25容器都新增了日志采集。
 7. Jaeger 使用内存存储，停止或重启会丢失其在线 trace；所需样本必须先归档。原始日志可能包含虚构订单和主机属性，未直接提交公开仓库。
 
 ## 5. 本机证据与复核

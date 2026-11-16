@@ -1,0 +1,57 @@
+{
+  "index_patterns": ["otel-logs-v2-*"],
+  "priority": 200,
+  "version": 2,
+  "_meta": {"owner": "glide-m0", "schema": "glide-m0-logs.v2"},
+  "template": {
+    "settings": {"number_of_shards": 1, "number_of_replicas": 0},
+    "mappings": {
+      "_meta": {"schema": "glide-m0-logs.v2"},
+      "_source": {"enabled": true},
+      "dynamic": "false",
+      "properties": {
+        "@timestamp": {"type": "date_nanos"},
+        "observedTimestamp": {"type": "date_nanos"},
+        "body": {"type": "text"},
+        "traceId": {"type": "keyword", "ignore_above": 64},
+        "spanId": {"type": "keyword", "ignore_above": 64},
+        "schemaUrl": {"type": "keyword", "ignore_above": 256},
+        "eventName": {"type": "keyword", "ignore_above": 256},
+        "attributes": {"type": "object", "enabled": false},
+        "severity": {
+          "type": "object",
+          "dynamic": "false",
+          "properties": {
+            "text": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}},
+            "number": {"type": "long"}
+          }
+        },
+        "resource": {
+          "type": "object",
+          "dynamic": "false",
+          "properties": {
+            "service": {
+              "type": "object",
+              "dynamic": "false",
+              "properties": {
+                "name": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}},
+                "namespace": {"type": "keyword", "ignore_above": 256},
+                "version": {"type": "keyword", "ignore_above": 256}
+              }
+            }
+          }
+        },
+        "instrumentationScope": {
+          "type": "object",
+          "dynamic": "false",
+          "properties": {
+            "name": {"type": "keyword", "ignore_above": 256},
+            "version": {"type": "keyword", "ignore_above": 256},
+            "schemaUrl": {"type": "keyword", "ignore_above": 256},
+            "attributes": {"type": "object", "enabled": false}
+          }
+        }
+      }
+    }
+  }
+}
