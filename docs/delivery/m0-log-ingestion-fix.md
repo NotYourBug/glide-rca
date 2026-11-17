@@ -1,6 +1,8 @@
 # M0 日志映射修复交付记录
 
-日期：2026-11-16。状态：**本次映射拒收修复和限定验收已完成，提交用户审查；不进入M1**。
+日期：2026-11-16。状态更新：2026-11-17，**本次映射拒收修复和限定验收已完成，随M0获用户交付审查通过**。
+
+审查记录：用户在M0完成情况讨论后明确“ok，那就M1走起”。本报告仍只记录M0修复的实测事实；M1方案另行确认。
 
 本次为用户授权的M0缺陷迭代，依据[修订方案](../design/stages/m0-log-ingestion-fix.md)，不启动M1。原M0的资源/故障验证仍保留其历史事实，本报告单独记录日志修复。
 
@@ -47,7 +49,7 @@ Payment真实故障窗口在新索引得到4条错误日志、8个支付ERROR sp
 - 本次实际覆盖的13个服务为ad、cart、checkout、currency、email、frontend、frontend-proxy、load-generator、payment、product-catalog、quote、recommendation、shipping。没有把全部25容器都当作已配置OTLP日志源；本次没有给其他容器新增stdout/filelog采集。
 - 原OpenSearch数据位于当前容器文件系统；保留旧容器，不通过重建或清空解决问题。原M0 artifacts不覆盖，原缺失区间不补造数据。
 
-复现、初始化顺序和停止方式见[操作说明](../runbooks/m0-local-lab.md)。本阶段成果仍待用户审查。
+复现、初始化顺序和停止方式见[操作说明](../runbooks/m0-local-lab.md)。本阶段成果已随M0获用户审查通过，限定与历史失败事实保持不变。
 
 ## 实施取舍
 

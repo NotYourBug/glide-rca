@@ -2,9 +2,10 @@
 
 基于 GALA+ 思路的微服务智能排障项目。全局路线为 OpenTelemetry Demo 实验环境 + RCAEval 回放，后端使用 Python，模型服务商暂定 DeepSeek。
 
-当前已完成 **M0：实验环境与接口验证** 的实现和限定范围验证，**等待用户审查**。已有代码为本地观测接口探针，不提供根因诊断业务。审查通过后才推进下一阶段。
+**M0：实验环境与接口验证已于 2026-11-17 获用户审查通过。当前进入 M1 设计阶段，方案等待确认，尚未开始开发。** 已有代码仍为本地观测接口探针，不提供根因诊断业务。
 
 - [设计目录](docs/design/README.md)
+- [待确认的 M1 设计：可信数据与确定性诊断基线](docs/design/stages/m1-design.md)
 - [已确认的 M0 设计](docs/design/stages/m0-design.md)
 - [M0 操作说明](docs/runbooks/m0-local-lab.md)
 - [M0 实测与交付状态](docs/delivery/m0-validation.md)
